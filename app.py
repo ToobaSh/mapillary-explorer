@@ -178,13 +178,18 @@ st.caption("Type an address, see a map, nearest Mapillary photo, and an inline 3
 
 with st.sidebar:
     st.header("Settings")
+
+    # Automatically load the token from Streamlit Cloud secrets (if available)
     default_token = os.getenv("MAPILLARY_TOKEN", "")
-    token = st.text_input("Mapillary access token (starts with MLY|)", value=default_token, type="password")
+
+    # Use a hidden token — no user input required
+    token = default_token
+
+    # Panorama preference toggle (you can keep this for flexibility)
     pano_first = st.checkbox("Prefer panoramic images", value=True)
-    st.markdown(
-        "Get a token from your Mapillary account. It must start with `MLY|`.",
-        help="https://www.mapillary.com/dashboard/developers"
-    )
+
+    st.caption("✅ Token loaded securely from Streamlit Cloud secrets.")
+
 
 address = st.text_input("Address", placeholder="e.g., Eiffel Tower, Paris", key="address_input")
 search = st.button("Search", type="primary", key="search_button")
@@ -264,4 +269,5 @@ if st.session_state.last_result:
     footer = f"ID: `{pid}`"
     if date_str:
         footer += f" — Captured: {date_str}"
+
     st.caption(footer) 
